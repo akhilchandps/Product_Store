@@ -1,11 +1,29 @@
-import { DataTypes } from "sequelize";
-import sequelize from "./index.js";
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
 const Product = sequelize.define("Product", {
-  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-  name: { type: DataTypes.STRING, allowNull: false },
-  image: { type: DataTypes.STRING, allowNull: false },
-  price: { type: DataTypes.FLOAT, allowNull: false },
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    allowNull: false,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    validate: {
+      isFloat: true, // Ensures price is a valid float number
+      min: 0, // Ensures price is non-negative
+    },
+  },
 });
 
-export default Product;
+module.exports = Product;

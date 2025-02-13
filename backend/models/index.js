@@ -1,19 +1,17 @@
-import { Sequelize } from "sequelize";
-import dbConfig from "../config/config.js"; 
+const sequelize = require("../config/database");
+const User = require("./user");
+const Product = require("./product");
 
-const env = process.env.NODE_ENV || "development";
-const config = dbConfig[env];
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    dialect: config.dialect,
-    logging: false,
-  }
-);
+const db = { sequelize, User,Product };
 
-export { sequelize };
-export default sequelize;
+sequelize.sync({ force: false }) // Change to true to reset DB on restart
+  .then(() => console.log("Database & tables synced"))
+  .catch(err => console.log("Error syncing database:", err));
+
+module.exports = db;
+
+
+
+
+
